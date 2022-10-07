@@ -61,7 +61,6 @@ class UserController {
       const user = await User.find(params.id)
       user.provincia = await Provincia.find(user.provincia_id)
       user.localidad = await Localidad.find(user.localidad_id)
-      user.provincia.localidades = (await Localidad.query().where({provincia_id: user.provincia.id}).fetch()).toJSON()
       response.send(user)
     } catch (error) {
       console.error('user by id: ' + error.name + ':' + error.message)
@@ -186,12 +185,8 @@ class UserController {
     const provincias = (await Provincia.query().where({}).fetch()).toJSON()
     response.send(provincias)
   }
-  async localidadesPorId({ params, response }) {
-    const id = Number(params.id)
-    const localidades = (await Localidad.query().where({ provincia_id: id }).fetch()).toJSON()
-    for (const i in localidades) {
-      localidades[i].nameFull = localidades[i].name + ' ' + localidades[i].cp
-    }
+  async localidadesPorId({ request, params, response }) {
+    const localidades = (await Localidad.query().where({}).fetch()).toJSON()
     response.send(localidades)
   }
 
@@ -207,7 +202,7 @@ class UserController {
     let modificar = await User.query().where('_id', params.id).update({estatus: dat.estatus})
     response.send(modificar)
   }
-  
+
   async delete ({ params, request, response }) {
     const { id } = params;
     const user = await User.find(id);
