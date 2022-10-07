@@ -193,6 +193,11 @@ class ClienteController {
     delete body.provincia
     delete body.localidad
     let editar = await Clientes.query().where('_id', client_id).update(body)
+    let imgSave = request.file('imgPerfil', {
+        types: ['image'],
+        size: '50mb'
+      })
+      await uploadFile(imgSave, clientes/$({client_id})/perfil, 'perfil')
     response.send(editar)
   }
 
