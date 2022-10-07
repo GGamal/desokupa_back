@@ -25,7 +25,7 @@ numeral.register('locale', 'fr', {
     thousands: '.'
   },
   currency: {
-    symbol: '€'
+    symbol: '$'
   }
 });
 numeral.locale('fr');
@@ -134,7 +134,7 @@ class ContratoController {
       for (const i in contrato.expenses) {
         expensesTotal = expensesTotal + contrato.expenses[i].amount
         contrato.expenses[i].amount = numeral(contrato.expenses[i].amount).format('0,0€');
-        contrato.expenses[i].userName 
+        contrato.expenses[i].userName
         const user = (await User.find(contrato.expenses[i].user_id)).toJSON()
         if (user.roles[0] === 0) {
           contrato.expenses[i].userName = user.full_name
@@ -187,7 +187,7 @@ class ContratoController {
           contratos[i].inmobiliaria = 'No Aplica'
         }
       }
-      
+
       response.send(contratos)
     } catch (error) {
       console.error('contratos by status: ' + error.name + ':' + error.message)
@@ -239,13 +239,13 @@ class ContratoController {
           contratos[i].inmobiliaria = 'No Aplica'
         }
       }
-      
+
       response.send(contratos)
     } catch (error) {
       console.error('contratos by status: ' + error.name + ':' + error.message)
     }
   }
-  
+
   async contratosByType ({ params, response, auth }) {
     try {
       const user = (await auth.getUser()).toJSON()
@@ -256,13 +256,13 @@ class ContratoController {
         contratos[i].cliente = cliente.type === 2 ? cliente.name : cliente.name + ' ' + cliente.last_name
         contratos[i].date = moment(contratos[i].created_at).format('DD/MM/YYYY')
       }
-      
+
       response.send(contratos)
     } catch (error) {
       console.error('contratos By Type: ' + error.name + ':' + error.message)
     }
   }
-  
+
   async contratosByCuotas ({ request, response, auth }) {
     try {
       let allContratos = (await Contrato.query().where({}).fetch()).toJSON()
@@ -299,7 +299,7 @@ class ContratoController {
           contratos[i].inmobiliaria = 'No Aplica'
         }
       }
-      
+
       response.send(contratos)
     } catch (error) {
       console.error('contratos by status: ' + error.name + ':' + error.message)
@@ -341,13 +341,13 @@ class ContratoController {
           contratos[i].inmobiliaria = 'No Aplica'
         }
       }
-      
+
       response.send(contratos)
     } catch (error) {
       console.error('contratos by status: ' + error.name + ':' + error.message)
     }
   }
-  
+
   async formulario({ params, response }) {
     try {
       let formulario = (await Contrato.query().where({codigo: params.codigo}).first()).toJSON()
@@ -361,7 +361,7 @@ class ContratoController {
       console.error('formulario: ' + error.name + ':' + error.message)
     }
   }
-  
+
   async contratosAsignadosOperario ({ request, response, auth }) {
     try {
       const user = (await auth.getUser()).toJSON()
@@ -389,13 +389,13 @@ class ContratoController {
           contratos[i].inmobiliaria = 'No Aplica'
         }
       }
-      
+
       response.send(contratos)
     } catch (error) {
       console.error('contratos asignados a operario: ' + error.name + ':' + error.message)
     }
   }
-  
+
   async contratosAsignadosLegal ({ request, response, auth }) {
     try {
       const user = (await auth.getUser()).toJSON()
@@ -423,13 +423,13 @@ class ContratoController {
           contratos[i].inmobiliaria = 'No Aplica'
         }
       }
-      
+
       response.send(contratos)
     } catch (error) {
       console.error('contratos asignados a legal: ' + error.name + ':' + error.message)
     }
   }
-  
+
   /**
    * Render a form to be used for creating a new contrato.
    * GET contratos/create
@@ -441,7 +441,7 @@ class ContratoController {
    */
   async create ({ request, response, view }) {
   }
-  
+
   async generarHito ({ request, response, auth }) {
     try {
       const user = (await auth.getUser()).toJSON()
@@ -470,7 +470,7 @@ class ContratoController {
       console.error('generar hito: ' + error.name + ':' + error.message)
     }
   }
-  
+
   async generarLink ({ request, response, auth }) {
     try {
       const user = (await auth.getUser()).toJSON()
@@ -488,7 +488,7 @@ class ContratoController {
       console.error('generar link: ' + error.name + ':' + error.message)
     }
   }
-  
+
   async crearFormulario ({ request, response, params, auth }) {
     try {
       let data = request.all()
@@ -501,7 +501,7 @@ class ContratoController {
       console.error('crear formulario: ' + error.name + ':' + error.message)
     }
   }
-  
+
   /**
    * Create/save a new contrato.
    * POST contratos
@@ -524,7 +524,7 @@ class ContratoController {
    */
   async show ({ params, request, response, view }) {
   }
-  
+
   /**
    * Render a form to update an existing contrato.
    * GET contratos/:id/edit
@@ -536,7 +536,7 @@ class ContratoController {
    */
   async edit ({ params, request, response, view }) {
   }
-  
+
   /**
    * Update contrato details.
    * PUT or PATCH contratos/:id
@@ -575,7 +575,7 @@ class ContratoController {
       console.error('status update: ' + error.name + ':' + error.message)
     }
   }
-  
+
   /**
    * Delete a contrato with id.
    * DELETE contratos/:id
@@ -603,7 +603,7 @@ class ContratoController {
     header = await imageToBase64(header).then(res => {
       return "data:image/jpeg;base64, " + res;
     })
-    
+
     let footer = Helpers.appRoot("public") + `/footer.jpeg`;
     footer = await imageToBase64(footer).then(res => {
       return "data:image/jpeg;base64, " + res;
@@ -1030,7 +1030,7 @@ class ContratoController {
     pdfDoc.pipe(fs.createWriteStream(filePath))
     pdfDoc.end()
     response.send(fileName)
-    
+
   }
 
   async generarPdfDesokupa ({ params, request, response }) {
@@ -1256,7 +1256,7 @@ class ContratoController {
         let e = data2.cuotas[i].val + '% Equivalente a ' + numeral((data2.cuotas[i].val * valor) / 100).format('0,0€');
         contenido[11].ul.push(e)
       }
-      
+
       var printer = new PdfMake(fonts)
       let docDefinition = {
         pageSize: 'letter',
@@ -1317,7 +1317,7 @@ class ContratoController {
       logo = await imageToBase64(logo).then(res => {
         return "data:image/png;base64, " + res;
       })
- 
+
       var fonts = {
         Roboto: {
           normal: 'fonts/Roboto-Regular.ttf',
@@ -1659,7 +1659,7 @@ class ContratoController {
         let e = inmuebles[i].direccion + ' ubicado en la provincia: ' + inmuebles[i].provinciaName + ' en la localidad: ' + inmuebles[i].localidadName
         contenido[0].columns[0][17].ul.push(e)
       }
- 
+
       var pdfDoc = await printer.createPdfKitDocument(docDefinition)
       var fileName = `Contrato365.pdf`
       mkdirp.sync(`${Helpers.appRoot()}/storage/uploads/pdf`)

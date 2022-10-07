@@ -41,9 +41,9 @@ class ExpenseController {
       data[i].userName = user.roles[0] === 0 ? user.full_name : user.name + ' ' + user.last_name
       data[i].date = moment(data[i].created_at).format('DD/MM/YYYY')
       total = total + data[i].amount
-      data[i].amount = numeral(data[i].amount).format('0,0€');
+      data[i].amount = numeral(data[i].amount).format('0,0$');
     }
-    total = numeral(total).format('0,0€');
+    total = numeral(total).format('0,0$');
     const send = {
       data,
       total

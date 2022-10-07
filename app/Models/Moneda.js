@@ -3,7 +3,7 @@
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
 
-class Provincia extends Model {
+class Moneda extends Model {
 }
 
-module.exports = Provincia
+module.exports = Moneda

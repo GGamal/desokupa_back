@@ -4,6 +4,7 @@ const Clientes = use("App/Models/Cliente")
 const Inmuebles = use("App/Models/Inmueble")
 const Provincia = use("App/Models/Provincia")
 const Localidad = use("App/Models/Localidad")
+const Moneda = use("App/Models/Moneda")
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -35,6 +36,7 @@ class ClienteController {
       clientes[i].full_name = clientes[i].name
       clientes[i].inmuebles = (await Inmuebles.query().where({cliente_id: clientes[i]._id}).fetch()).toJSON()
       for (const j in clientes[i].inmuebles) {
+        clientes[i].inmuebles[j].locationName = (await Moneda.find(clientes[i].inmuebles[j].moneda_id)).name
         clientes[i].inmuebles[j].locationName = (await Localidad.find(clientes[i].inmuebles[j].localidad_id)).name
         clientes[i].inmuebles[j].provinceName = (await Provincia.find(clientes[i].inmuebles[j].provincia_id)).name
       }
@@ -46,6 +48,9 @@ class ClienteController {
       }
       if (clientes[i].localidad_id) {
         clientes[i].localidad = (await Localidad.find(clientes[i].localidad_id)).name
+      }
+      if (clientes[i].moneda_id) {
+        clientes[i].moneda = (await Moneda.find(clientes[i].moneda_id)).name
       }
     }
 
@@ -73,6 +78,9 @@ class ClienteController {
       }
       if (inmuebles[i].localidad_id) {
         inmuebles[i].localidad = (await Localidad.find(inmuebles[i].localidad_id)).name
+      }
+      if (inmuebles[i].moneda_id) {
+        inmuebles[i].moneda = (await Moneda.find(inmuebles[i].moneda_id)).name
       }
     }
 

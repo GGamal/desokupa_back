@@ -2,7 +2,7 @@
 
 /*
 |--------------------------------------------------------------------------
-| ProvinciaSeeder
+| MonedaSeeder
 |--------------------------------------------------------------------------
 |
 | Make use of the Factory instance to seed database with dummy data or
@@ -12,8 +12,8 @@
 
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Factory = use('Factory')
-const Provincia = use("App/Models/Provincia")
-const ProvinciasData = [
+const Moneda = use("App/Models/Moneda")
+const MonedaData = [
   {
     id: 1,
     name: "Chile"
@@ -37,39 +37,19 @@ const ProvinciasData = [
    {
     id: 6,
     name: "República Dominicana"
-   },
-   {
-    id: 7,
-    name: "México"
-   },
-   {
-    id: 8,
-    name: "Perú"
-   },
-   {
-    id: 9,
-    name: "Uruguay"
-   },
-   {
-    id: 10,
-    name: "Ecuador"
-   },
-   {
-    id: 11,
-    name: "Otro"
    }
 ]
 
-class ProvinciaSeeder {
+class MonedaSeeder {
   async run () {
-    for (let i of ProvinciasData) {
-      let cat = await Provincia.findBy('id', i.id)
+    for (let i of MonedaData) {
+      let cat = await Moneda.findBy('id', i.id)
       if (!cat) {
-        await Provincia.create(i)
+        await Moneda.create(i)
       }
     }
-    console.log('Finished Provincias')
+    console.log('Finished Monedas')
   }
 }
 
-module.exports = ProvinciaSeeder
+module.exports = MonedaSeeder
