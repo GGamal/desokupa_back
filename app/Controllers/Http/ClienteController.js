@@ -4,6 +4,10 @@ const Clientes = use("App/Models/Cliente")
 const Inmuebles = use("App/Models/Inmueble")
 const Provincia = use("App/Models/Provincia")
 const Localidad = use("App/Models/Localidad")
+const Helpers = use('Helpers')
+const mkdirp = use('mkdirp')
+const fs = require('fs')
+
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -12,6 +16,26 @@ const Localidad = use("App/Models/Localidad")
 /**
  * Resourceful controller for interacting with clientes
  */
+ const uploadFile = async (file, path, name) => {
+  if (Helpers.appRoot('storage/uploads')) {
+    await file.move(Helpers.appRoot('storage/uploads/' + path), {
+      name: name,
+      overwrite: true
+    })
+  } else {
+    mkdirp.sync(`${__dirname}/storage/Excel`)
+  }
+
+  const fileName = file.fileName
+
+  if (!file.moved()) {
+    return file.error()
+  }
+
+  return fileName
+}
+
+
 class ClienteController {
   /**
    * Show a list of all clientes.
@@ -120,13 +144,20 @@ class ClienteController {
    */
   async create ({ request, response, auth }) {
     const user = (await auth.getUser()).toJSON()
-    var dat = request.all()
+    var dat = request.only(['form'])
+    dat = JSON.parse(dat.form)
     dat.comercial_id = user._id
     if (user.roles[0] === 0 || user.roles[0] === 1) {
       dat.admin = true
     } else {
       dat.admin = false
     }
+    let imgSave = request.file('imagen', {
+      types: ['image'],
+      size: '50mb'
+    })
+    console.log(imgSave)
+    await uploadFile(imgSave, `users/${dat.email.toString()}/perfil`, 'perfil')
     const cliente = await Clientes.create(dat)
     response.send(cliente)
   }
@@ -193,6 +224,11 @@ class ClienteController {
     delete body.provincia
     delete body.localidad
     let editar = await Clientes.query().where('_id', client_id).update(body)
+    let imgSave = request.file('imgPerfil', {
+        types: ['image'],
+        size: '50mb'
+      })
+      await uploadFile(imgSave, clientes/$({client_id})/perfil, 'perfil')
     response.send(editar)
   }
 
