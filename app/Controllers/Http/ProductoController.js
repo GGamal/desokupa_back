@@ -1,4 +1,5 @@
 'use strict'
+
 const Helpers = use('Helpers')
 const mkdirp = use('mkdirp')
 const fs = require('fs')
@@ -30,6 +31,7 @@ const Productos = use("App/Models/Producto")
 
   return fileName
 }
+
 class ProductoController {
   /**
    * Show a list of all servicios.
@@ -58,6 +60,7 @@ class ProductoController {
   async create ({ request, response, view }) {
     var data = request.only(['form'])
     data = JSON.parse(data.form)
+    var data = request.all()
     let imgSave = request.file('imagen', {
       types: ['image'],
       size: '50mb'
