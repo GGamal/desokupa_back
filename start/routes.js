@@ -75,6 +75,11 @@ addPrefixToGroup(
     Route.post("subir_archivo/:id" ,'UploadController.subirArchivo')
     Route.get("eliminar_archivo/:id" ,'UploadController.eliminarArchivo')
 
+    Route.get("productos" ,'ProductoController.index')
+    Route.post("nuevo_producto" ,'ProductoController.create')
+    Route.put("editar_producto/:id" ,'ProductoController.update')
+    Route.put('eliminar_producto/:id', 'ProductoController.destroy')
+
     Route.get("formas_pagos" ,'FormaPagoController.index')
     Route.post("nueva_forma_pago" ,'FormaPagoController.create')
     Route.put("editar_forma_pago/:id" ,'FormaPagoController.update')
