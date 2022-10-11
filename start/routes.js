@@ -49,7 +49,7 @@ addPrefixToGroup(
     Route.get('adjunto_file/:file', 'UploadController.getFileByDirectoryAdjuntos')
     Route.get('hito_file/:file', 'UploadController.getFileByDirectoryHitos')
     Route.get('pdf_file/:file', 'UploadController.getFileByDirectoryPdf')
-    
+
     Route.post("user_by_rol", "UserController.userByRol") // metodo para obtener usuarios segun el rol
     Route.get("user_by_id/:id", "UserController.userById") // metodo para obtener informacion del usuario por id del mismo
   })
@@ -65,13 +65,13 @@ addPrefixToGroup(
       Route.put("update_status/:id", "UserController.updateStatus")
       Route.put('new_password/:id', 'UserController.cambiarPasword')
       Route.post("edit_user/:id", "UserController.editUser")
-      
+
       Route.get("operarios_by_user" ,'UserController.operariosByUser')
     Route.get("comercios_by_user" ,'UserController.comerciosByUser')
-    
+
     Route.get("provincias" ,'UserController.provincias')
     Route.get("localidadesPorId/:id" ,'UserController.localidadesPorId')
-    
+
     Route.post("subir_archivo/:id" ,'UploadController.subirArchivo')
     Route.get("eliminar_archivo/:id" ,'UploadController.eliminarArchivo')
 
@@ -79,7 +79,12 @@ addPrefixToGroup(
     Route.post("nueva_forma_pago" ,'FormaPagoController.create')
     Route.put("editar_forma_pago/:id" ,'FormaPagoController.update')
     Route.put('eliminar_forma_pago/:id', 'FormaPagoController.destroy')
-    
+
+    Route.get("servicios" ,'ServicioController.index')
+    Route.post("nuevo_servicio" ,'ServicioController.create')
+    Route.put("editar_servicio/:id" ,'ServicioController.update')
+    Route.put('eliminar_servicio/:id', 'ServicioController.destroy')
+
     Route.get("contratos" ,'ContratoController.index')
     Route.get("contratos/:type" ,'ContratoController.contratosByType')
     Route.get("contrato_by_id/:id" ,'ContratoController.contratoById')
@@ -95,13 +100,13 @@ addPrefixToGroup(
 
     Route.get("contratos_asignados" ,'ContratoController.contratosAsignadosOperario')
     Route.get("contratos_asignados_legal" ,'ContratoController.contratosAsignadosLegal')
-    
+
     Route.post("generar_hito" ,'ContratoController.generarHito')
-    
+
     Route.post("generar_pdf_365" ,'ContratoController.generarPdf365')
     Route.post("generar_pdf_desokupa" ,'ContratoController.generarPdfDesokupa')
     Route.post("makeCommercialContractPdf",'ContratoController.makeCommercialContractPdf')
-    
+
 
     Route.get("clientes" ,'ClienteController.index')
     Route.get("cliente_by_id/:id" ,'ClienteController.clientById')
@@ -121,4 +126,3 @@ addPrefixToGroup(
 
   }).middleware("auth")
   );
-  

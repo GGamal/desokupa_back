@@ -26,3 +26,6 @@ Run the following command to run startup migrations.
 ```js
 adonis migration:run
 ```
+
+
+### sale error de conexion con el servidor cuando edito algun cliente, pero si se guardan los cambios. solo pasa al editar un cliente
