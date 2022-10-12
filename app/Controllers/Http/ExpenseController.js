@@ -128,6 +128,10 @@ class ExpenseController {
    * @param {Response} ctx.response
    */
   async destroy ({ params, request, response }) {
+    const { id } = params;
+    const expense = await Expense.find(id);
+    let paymentMethodDeleted = await Expense.query().where('_id', id).update({ isDeleted: true })
+    response.send(true)
   }
 }
 
