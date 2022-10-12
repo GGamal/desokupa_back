@@ -97,6 +97,7 @@ addPrefixToGroup(
     Route.post("formulario/:id" ,'ContratoController.crearFormulario')
     Route.post("generar_link" ,'ContratoController.generarLink')
     Route.get("contractsPayable",'ContratoController.contractsPayable')
+    Route.put("contrato_delete/:id" ,'ContratoController.destroy')
 
     Route.get("contratos_asignados" ,'ContratoController.contratosAsignadosOperario')
     Route.get("contratos_asignados_legal" ,'ContratoController.contratosAsignadosLegal')
@@ -123,6 +124,8 @@ addPrefixToGroup(
     Route.get('getIncomes', 'IncomeController.index')
     Route.get('getExpenses', 'ExpenseController.index')
     Route.post('setExpense', 'ExpenseController.store')
+    Route.put('updateExpense', 'ExpenseController.update')
+    Route.put('deleteExpense/:id', 'ExpenseController.destroy')
 
   }).middleware("auth")
   );

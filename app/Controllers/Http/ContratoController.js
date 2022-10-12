@@ -587,7 +587,7 @@ class ContratoController {
   async destroy ({ params, request, response }) {
     const { id } = params;
     const contract = await Contrato.find(id);
-    let clientDeleted = await Contrato.query().where('_id', id).update({ isDeleted: true })
+    let clientDeleted = await Contrato.query().where('_id', id).delete()
     response.send(true)
   }
   async makeCommercialContractPdf ({ request, response }) {

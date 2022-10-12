@@ -60,7 +60,6 @@ class ProductoController {
   async create ({ request, response, view }) {
     var data = request.only(['form'])
     data = JSON.parse(data.form)
-    var data = request.all()
     let imgSave = request.file('imagen', {
       types: ['image'],
       size: '50mb'
@@ -131,7 +130,7 @@ class ProductoController {
   async destroy ({ params, request, response }) {
     const { id } = params;
     const producto = await Productos.find(id);
-    let paymentMethodDeleted = await Productos.query().where('_id', id).update({ isDeleted: true })
+    let paymentMethodDeleted = await Productos.query().where('_id', id).delete()
     response.send(true)
   }
 }
