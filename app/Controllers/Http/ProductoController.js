@@ -1,6 +1,11 @@
 'use strict'
 
+const Helpers = use('Helpers')
+const mkdirp = use('mkdirp')
+const fs = require('fs')
+
 const Productos = use("App/Models/Producto")
+
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -8,6 +13,24 @@ const Productos = use("App/Models/Producto")
 /**
  * Resourceful controller for interacting with servicios
  */
+ const uploadFile = async (file, path, name) => {
+  if (Helpers.appRoot('storage/uploads')) {
+    await file.move(Helpers.appRoot('storage/uploads/' + path), {
+      name: name,
+      overwrite: true
+    })
+  } else {
+    mkdirp.sync(`${__dirname}/storage/Excel`)
+  }
+
+  const fileName = file.fileName
+
+  if (!file.moved()) {
+    return file.error()
+  }
+
+  return fileName
+}
 
 class ProductoController {
   /**
@@ -35,13 +58,14 @@ class ProductoController {
    * @param {View} ctx.view
    */
   async create ({ request, response, view }) {
+    var data = request.only(['form'])
+    data = JSON.parse(data.form)
     var data = request.all()
     let imgSave = request.file('imagen', {
       types: ['image'],
       size: '50mb'
     })
-    console.log(imgSave)
-    await uploadFile(imgSave, `users/${data.email.toString()}/perfil`, 'perfil')
+    await uploadFile(imgSave, `productos/${data.name.toString()}/perfil`, 'perfil')
     const newProducto = await Productos.create(data)
     response.send(newProducto)
   }
