@@ -9,7 +9,7 @@ numeral.register('locale', 'fr', {
     thousands: '.'
   },
   currency: {
-    symbol: '€'
+    symbol: ''
   }
 });
 // numeral.locale('fr');
@@ -113,6 +113,10 @@ class ExpenseController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    let expen_id = params.id
+    let body = request.all()
+    let editar = await Expense.query().where('_id', expen_id).update(body)
+    response.send(editar)
   }
 
   /**
