@@ -49,6 +49,7 @@ addPrefixToGroup(
     Route.get('adjunto_file/:file', 'UploadController.getFileByDirectoryAdjuntos')
     Route.get('hito_file/:file', 'UploadController.getFileByDirectoryHitos')
     Route.get('pdf_file/:file', 'UploadController.getFileByDirectoryPdf')
+    Route.get('cliente_img/:file', 'UploadController.getFileByCliente')
 
     Route.post("user_by_rol", "UserController.userByRol") // metodo para obtener usuarios segun el rol
     Route.get("user_by_id/:id", "UserController.userById") // metodo para obtener informacion del usuario por id del mismo

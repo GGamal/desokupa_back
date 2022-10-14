@@ -66,6 +66,15 @@ class ContratoController {
           contratos[i].cliente = cliente.name
         }
         contratos[i].valor = numeral(contratos[i].valor).format('0,0€');
+        contratos[i].email = cliente.email
+        contratos[i].phone1 = cliente.phone1
+        contratos[i].imagen = cliente.imagen
+        const provincia = (await Provincia.find(cliente.provincia_id))
+        const localidad = (await Localidad.find(cliente.localidad_id))
+        contratos[i].provincia = provincia.name
+        contratos[i].localidad = localidad.name
+        
+
       }
       const send = {
         contracts: contratos,

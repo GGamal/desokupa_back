@@ -214,6 +214,11 @@ class UploadController {
     response.send(true)
   }
 
+  async getFileByCliente ({ params, response }) {
+    const dir = params.file
+    response.download(Helpers.appRoot('storage/uploads/users' + `/${dir}` + '/perfil/perfil'))
+  }
+
 }
 
 module.exports = UploadController
