@@ -73,7 +73,7 @@ class ContratoController {
         const localidad = (await Localidad.find(cliente.localidad_id))
         contratos[i].provincia = provincia.name
         contratos[i].localidad = localidad.name
-        
+
 
       }
       const send = {
@@ -708,7 +708,7 @@ class ContratoController {
           style: 'textblack',
           margin: [54, 10, 0, 0],
           text: [
-            { style: '', text: `DIRECCIÓN: ${client.direccion ? client.direccion : ''}\n` },
+            { style: '', text: `PROVINCIA: ${client.direccion ? client.direccion : ''}\n` },
           ]
         },
         {
@@ -716,7 +716,7 @@ class ContratoController {
           style: 'textblack',
           margin: [54, 10, 0, 20],
           text: [
-            { style: '', text: `PROVINCIA: ${provincia.name}\n` },
+            { style: '', text: `PAIS: ${provincia.name}\n` },
           ]
         },
         {
