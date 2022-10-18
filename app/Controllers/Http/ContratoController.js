@@ -696,6 +696,7 @@ class ContratoController {
           },
           layout: {
             hLineColor: 'grey'
+            
           }
         },
         {
