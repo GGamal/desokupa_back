@@ -20,6 +20,7 @@ const PdfMake = use("pdfmake")
 const fs = require('fs')
 const path = require('path')
 let numeral = require('numeral');
+const { getEnvironmentData } = require('worker_threads')
 numeral.register('locale', 'fr', {
   delimiters: {
     thousands: '.'
@@ -66,13 +67,18 @@ class ContratoController {
           contratos[i].cliente = cliente.name
         }
         contratos[i].valor = numeral(contratos[i].valor).format('0,0€');
+        contratos[i].total = numeral(contratos[i].total).format('0,0');
+        contratos[i].impuestos = numeral(contratos[i].impuestos).format('0,0');
         contratos[i].email = cliente.email
         contratos[i].phone1 = cliente.phone1
         contratos[i].imagen = cliente.imagen
         const provincia = (await Provincia.find(cliente.provincia_id))
         const localidad = (await Localidad.find(cliente.localidad_id))
+        // const totales = (await Contrato.find(total))
+        // contratos[i].totales = total
         contratos[i].provincia = provincia.name
         contratos[i].localidad = localidad.name
+        
         
 
       }
@@ -150,7 +156,20 @@ class ContratoController {
         } else {
           contrato.expenses[i].userName = user.name + ' ' +  user.last_name
         }
+        
       }
+      // contratos[i].valor = numeral(contratos[i].valor).format('0,0€');
+      // contratos[i].total = numeral(contratos[i].total).format('0,0');
+      // contratos[i].impuestos = numeral(contratos[i].impuestos).format('0,0');
+      // contratos[i].email = cliente.email
+      // contratos[i].phone1 = cliente.phone1
+      // contratos[i].imagen = cliente.imagen
+      //  const provincia = (await Provincia.find(cliente.provincia_id))
+      // const localidad = (await Localidad.find(cliente.localidad_id))
+      // // const totales = (await Contrato.find(total))
+      //  // contratos[i].totales = total
+      // contratos[i].provincia = provincia.name
+      // contratos[i].localidad = localidad.name
       contrato.expensesTotal = expensesTotal
       response.send(contrato)
     } catch (error) {
@@ -657,7 +676,7 @@ class ContratoController {
                 {
                   alignment: 'left',
                   border: [false, true, false, true],
-                  fillColor: '#f50707',
+                  fillColor: '#272727',
                   margin: [50, 5, 0, 0],
                   style: 'textnormal',
                   text: [
@@ -676,7 +695,7 @@ class ContratoController {
             ]
           },
           layout: {
-            hLineColor: '#f50707'
+            hLineColor: 'grey'
           }
         },
         {
@@ -708,7 +727,7 @@ class ContratoController {
           style: 'textblack',
           margin: [54, 10, 0, 0],
           text: [
-            { style: '', text: `DIRECCIÓN: ${client.direccion ? client.direccion : ''}\n` },
+            { style: '', text: `PAIS: ${provincia.name}\n` },
           ]
         },
         {
@@ -716,7 +735,7 @@ class ContratoController {
           style: 'textblack',
           margin: [54, 10, 0, 20],
           text: [
-            { style: '', text: `PROVINCIA: ${provincia.name}\n` },
+            { style: '', text: `CIUDAD: ${client.direccion ? client.direccion : ''}\n` },
           ]
         },
         {
@@ -741,7 +760,7 @@ class ContratoController {
                   border: [false, true, false, true],
                   margin: [0, 5, 0, 0],
                   text: [
-                    { style: 'header', text: `${body.type === 1 ? 'Contrato Desokupa' : 'Contrato 365'}` }
+                    { style: 'header', text: `EXPIRACION: ${body.fecha}` }
                   ]
                 }
               ],
@@ -756,15 +775,18 @@ class ContratoController {
           table: {
             widths: [420, 70],
             heights: [30, 30],
-            body: [
+            body:[
               [
                 {
                   alignment: 'left',
                   border: [false, false, true, true],
                   margin: [0, 5, 0, 0],
                   style: 'textblack',
-                  text: [
-                    { style: '', text: `${'Contrato ' + body.numero}` }
+                  text: [ 
+                    { style: '', text:`${'Servicio: ' + body.servicio[0].name + ' ' + '( '  +  body.servicio[0].categoria  +  ' )' + ' ' + body.servicio[0].descripcion}` },
+                    // { style: '', text:`${'Servicio: ' + body.servicio[1].name + ' ' + '( '  +  body.servicio[1].categoria  +  ' )' + ' ' + body.servicio[2].descripcion}` },
+                    // { style: '', text:`${'Servicio: ' + body.servicio[2].name + ' ' + '( '  +  body.servicio[2].categoria  +  ' )' + ' ' + body.servicio[2].descripcion}` },
+                    // { style: '', text:`${'Servicio: ' + body.servicio[3].name + ' ' + '( '  +  body.servicio[3].categoria  +  ' )' + ' ' + body.servicio[3].descripcion}` },
                   ]
                 },
                 {
@@ -774,7 +796,7 @@ class ContratoController {
                   margin: [0, 5, 0, 0],
                   fillColor: '#CCC9C8',
                   text: [
-                    { style: '', text: `${body.valor}€` }
+                    { style: '', text: `${body.valor} ${body.moneda}` }
                   ]
                 }
               ],
@@ -873,7 +895,7 @@ class ContratoController {
                   fillColor: '#CCC9C8',
                   text: [
                     { style: 'subtitle', text: `Formas de pago:\n` },
-                    { style: 'text', text: `${paidMethod.name}\n\n` },
+                    { style: 'text',color:'black', text: `${paidMethod.name}\n\n` },
                     { style: 'subtitle', text: `Observaciones:\n` },
                     { style: 'text', text: `` },
                   ]
@@ -892,7 +914,7 @@ class ContratoController {
                   border: [false, false, false, true],
                   margin: [0, 5, 0, 0],
                   text: [
-                    { style: 'textblack', text: `${body.valor}€` }
+                    { style: 'textblack', text: `${body.valor} ${body.moneda}` }
                   ]
                 }
               ],
@@ -904,7 +926,7 @@ class ContratoController {
                   style: 'textblack',
                   margin: [0, 5, 0, 0],
                   text: [
-                    { style: '', text: `IGIC 7%:` }
+                    { style: '', text: `IMPUESTOS:` }
                   ]
                 },
                 {
@@ -912,7 +934,7 @@ class ContratoController {
                   border: [false, false, false, true],
                   margin: [0, 5, 0, 0],
                   text: [
-                    { style: 'textblack', text: `${igic > 0 ? igic + '€' : ''}` }
+                    { style: 'textblack', text: `${body.impuestos} ${body.moneda}` }
                   ]
                 }
               ],
@@ -934,7 +956,7 @@ class ContratoController {
                   margin: [0, 5, 0, 0],
                   fillColor: '#999999',
                   text: [
-                    { style: 'textblack', text: `${total}€` }
+                    { style: 'textblack', text: `${body.total} ${body.moneda}` }
                   ]
                 }
               ],
