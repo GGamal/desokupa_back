@@ -119,6 +119,16 @@ class ProductoController {
     response.send(editar)
   }
 
+  async servicioById({ params, response }) {
+    try {
+      const servicio = await Productos.find(params.id)
+      console.log('entre al back de servicio id')
+      response.send(servicio)
+    } catch (error) {
+      console.error('user by id: ' + error.name + ':' + error.message)
+    }
+  }
+
   /**
    * Delete a producto with id.
    * DELETE productos/:id
