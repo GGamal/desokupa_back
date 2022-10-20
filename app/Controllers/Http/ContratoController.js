@@ -631,7 +631,7 @@ class ContratoController {
     let texservis = []
     if (servicios !== undefined){
       servicios.map((item)=>{
-        texservis = [...texservis, `Servicio: ${item.name} ( ${item.categoria} ) ${item.descripcion}, `]
+        texservis = [...texservis, `Servicio: ${item.name} ( ${item.categoria} ) ${item.descripcion}, \n`]
       })
     }
     body.date = moment(body.created_at).format('DD/MM/YYYY')
@@ -787,72 +787,19 @@ class ContratoController {
               [
                 {
                   alignment: 'left',
-                  border: [false, false, true, true],
+                  border: [false, true, false, false],
                   margin: [0, 5, 0, 0],
                   style: 'textblack',
                   text: [...texservis]
                 },
                 {
                   alignment: 'center',
-                  border: [false, false, false, true],
+                  border: [true, false, false, false],
                   style: 'textblack',
                   margin: [0, 5, 0, 0],
                   fillColor: '#CCC9C8',
                   text: [
                     { style: '', text: `${body.valor} ${body.moneda}` }
-                  ]
-                }
-              ],
-              [
-                {
-                  alignment: 'left',
-                  border: [false, false, true, true],
-                  margin: [40, 5, 0, 0],
-                  style: 'textnormal',
-                  text: [
-                    { style: 'header', text: `` }
-                  ]
-                },
-                {
-                  alignment: 'right',
-                  border: [false, false, false, true],
-                  style: 'textnormal',
-                  fillColor: '#CCC9C8',
-                  text: [
-                    { style: 'header', text: `` }
-                  ]
-                }
-              ],
-            ]
-          },
-          layout: {
-            hLineColor: '#999999',
-            vLineColor: '#999999'
-          }
-        },
-        {
-          style: 'tableDescription',
-          table: {
-            widths: [420, 70],
-            heights: [25, 25],
-            body: [
-              [
-                {
-                  alignment: 'left',
-                  border: [false, false, true, true],
-                  margin: [40, 5, 0, 0],
-                  style: 'textnormal',
-                  text: [
-                    { style: 'header', text: `` }
-                  ]
-                },
-                {
-                  alignment: 'right',
-                  border: [false, false, false, true],
-                  style: 'textnormal',
-                  fillColor: '#CCC9C8',
-                  text: [
-                    { style: 'header', text: `` }
                   ]
                 }
               ],

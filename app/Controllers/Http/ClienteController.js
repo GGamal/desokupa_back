@@ -156,7 +156,6 @@ class ClienteController {
       types: ['image'],
       size: '50mb'
     })
-    console.log(imgSave)
     await uploadFile(imgSave, `users/${dat.email.toString()}/perfil`, 'perfil')
     const cliente = await Clientes.create(dat)
     response.send(cliente)
@@ -220,15 +219,14 @@ class ClienteController {
    */
   async update ({ params, request, response }) {
     let client_id = params.id
-    let body = request.all()
-    delete body.provincia
-    delete body.localidad
-    let editar = await Clientes.query().where('_id', client_id).update(body)
-    let imgSave = request.file('imgPerfil', {
+    var dat = request.only(['form'])
+    dat = JSON.parse(dat.form)
+    let editar = await Clientes.query().where('_id', client_id).update(dat)
+    let imgSave = request.file('imagen', {
         types: ['image'],
         size: '50mb'
       })
-      await uploadFile(imgSave, clientes/$({client_id})/perfil, 'perfil')
+      await uploadFile(imgSave, `users/${client_id}/perfil`, 'perfil')
     response.send(editar)
   }
 

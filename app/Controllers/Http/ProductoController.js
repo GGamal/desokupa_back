@@ -60,11 +60,6 @@ class ProductoController {
   async create ({ request, response, view }) {
     var data = request.only(['form'])
     data = JSON.parse(data.form)
-    let imgSave = request.file('imagen', {
-      types: ['image'],
-      size: '50mb'
-    })
-    await uploadFile(imgSave, `productos/${data.name.toString()}/perfil`, 'perfil')
     const newProducto = await Productos.create(data)
     response.send(newProducto)
   }
