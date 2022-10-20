@@ -78,8 +78,8 @@ class ContratoController {
         // contratos[i].totales = total
         contratos[i].provincia = provincia.name
         contratos[i].localidad = localidad.name
-        
-        
+
+
 
       }
       const send = {
@@ -156,7 +156,7 @@ class ContratoController {
         } else {
           contrato.expenses[i].userName = user.name + ' ' +  user.last_name
         }
-        
+
       }
       // contratos[i].valor = numeral(contratos[i].valor).format('0,0€');
       // contratos[i].total = numeral(contratos[i].total).format('0,0');
@@ -627,6 +627,13 @@ class ContratoController {
     let provincia = (await Provincia.query().find(client.provincia_id)).toJSON()
     let paidMethod = (await Formas.query().find(body.formaPago)).toJSON()
     let code = body._id.split('').slice(16).join('')
+    let servicios = body.servicio
+    let texservis = []
+    if (servicios !== undefined){
+      servicios.map((item)=>{
+        texservis = [...texservis, `Servicio: ${item.name} ( ${item.categoria} ) ${item.descripcion}, `]
+      })
+    }
     body.date = moment(body.created_at).format('DD/MM/YYYY')
     body.valor = numeral(body.valor).format('0,0€');
     total = numeral(total).format('0,0€');
@@ -696,7 +703,7 @@ class ContratoController {
           },
           layout: {
             hLineColor: 'grey'
-            
+
           }
         },
         {
@@ -783,12 +790,7 @@ class ContratoController {
                   border: [false, false, true, true],
                   margin: [0, 5, 0, 0],
                   style: 'textblack',
-                  text: [ 
-                    { style: '', text:`${'Servicio: ' + body.servicio[0].name + ' ' + '( '  +  body.servicio[0].categoria  +  ' )' + ' ' + body.servicio[0].descripcion}` },
-                    // { style: '', text:`${'Servicio: ' + body.servicio[1].name + ' ' + '( '  +  body.servicio[1].categoria  +  ' )' + ' ' + body.servicio[2].descripcion}` },
-                    // { style: '', text:`${'Servicio: ' + body.servicio[2].name + ' ' + '( '  +  body.servicio[2].categoria  +  ' )' + ' ' + body.servicio[2].descripcion}` },
-                    // { style: '', text:`${'Servicio: ' + body.servicio[3].name + ' ' + '( '  +  body.servicio[3].categoria  +  ' )' + ' ' + body.servicio[3].descripcion}` },
-                  ]
+                  text: [...texservis]
                 },
                 {
                   alignment: 'center',
