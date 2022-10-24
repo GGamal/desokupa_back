@@ -634,7 +634,7 @@ class ContratoController {
         texservis = [...texservis, `Servicio: ${item.name} ( ${item.categoria} ) ${item.descripcion}, \n`]
       })
     }
-    body.date = moment(body.created_at).format('DD/MM/YYYY')
+    body.fecha = moment(body.fecha).format('DD/MM/YYYY')
     body.valor = numeral(body.valor).format('0,0€');
     total = numeral(total).format('0,0€');
     igic = numeral(igic).format('0,0€');
@@ -669,8 +669,9 @@ class ContratoController {
       footer: {
         image: footer,
         alignment: 'center',
+        position: path.isAbsolute,
         width: 100,
-        margin: [0, 5, 0, 0],
+        margin: [0, 0, 0, 0],
       },
       content: [
         {
@@ -800,26 +801,6 @@ class ContratoController {
                   fillColor: '#CCC9C8',
                   text: [
                     { style: '', text: `${body.valor} ${body.moneda}` }
-                  ]
-                }
-              ],
-              [
-                {
-                  alignment: 'left',
-                  border: [false, false, true, true],
-                  margin: [40, 5, 0, 0],
-                  style: 'textnormal',
-                  text: [
-                    { style: 'header', text: `` }
-                  ]
-                },
-                {
-                  alignment: 'right',
-                  border: [false, false, false, true],
-                  style: 'textnormal',
-                  fillColor: '#CCC9C8',
-                  text: [
-                    { style: 'header', text: `` }
                   ]
                 }
               ],
@@ -1005,7 +986,7 @@ class ContratoController {
           bold: true,
           fontSize: 13,
           color: 'black'
-        }
+        },
       }
     }
     var pdfDoc = await printer.createPdfKitDocument(docDefinition)
