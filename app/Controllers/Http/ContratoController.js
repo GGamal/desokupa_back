@@ -675,8 +675,9 @@ class ContratoController {
       footer: {
         image: footer,
         alignment: 'center',
+        position: path.isAbsolute,
         width: 100,
-        margin: [0, 5, 0, 0],
+        margin: [0, 0, 0, 0],
       },
       content: [
         {
@@ -1014,7 +1015,7 @@ class ContratoController {
           bold: true,
           fontSize: 13,
           color: 'black'
-        }
+        },
       }
     }
     var pdfDoc = await printer.createPdfKitDocument(docDefinition)
