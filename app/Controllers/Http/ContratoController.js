@@ -10,6 +10,7 @@ const Localidad = use("App/Models/Localidad")
 const Expense = use("App/Models/Expense")
 const FormaPago = use("App/Models/FormaPago")
 const Contrato = use("App/Models/Contrato")
+const Servicio = use("App/Models/Producto")
 const Hitos = use("App/Models/Hito")
 const Helpers = use('Helpers')
 const mkdirp = use('mkdirp')
@@ -21,6 +22,8 @@ const fs = require('fs')
 const path = require('path')
 let numeral = require('numeral');
 const { getEnvironmentData } = require('worker_threads')
+const Producto = require('../../Models/Producto')
+const { BlockList } = require('net')
 numeral.register('locale', 'fr', {
   delimiters: {
     thousands: '.'
@@ -74,12 +77,14 @@ class ContratoController {
         contratos[i].imagen = cliente.imagen
         const provincia = (await Provincia.find(cliente.provincia_id))
         const localidad = (await Localidad.find(cliente.localidad_id))
-        // const totales = (await Contrato.find(total))
-        // contratos[i].totales = total
         contratos[i].provincia = provincia.name
         contratos[i].localidad = localidad.name
+        // const servicio = (await Servicio.find(productos.id))
+        // contratos[i].servicio = servicio.name
 
-
+        // const totales = (await Contrato.find(total))
+        // contratos[i].totales = total
+        
 
       }
       const send = {
@@ -635,15 +640,16 @@ class ContratoController {
       })
     }
     body.date = moment(body.created_at).format('DD/MM/YYYY')
+    body.fecha = moment(body.fecha).format('DD/MM/YYYY')
     body.valor = numeral(body.valor).format('0,0€');
     total = numeral(total).format('0,0€');
     igic = numeral(igic).format('0,0€');
-    let header = Helpers.appRoot("public") + `/header.jpeg`;
+    let header = Helpers.appRoot("public") + `/header.jpg`;
     header = await imageToBase64(header).then(res => {
       return "data:image/jpeg;base64, " + res;
     })
 
-    let footer = Helpers.appRoot("public") + `/footer.jpeg`;
+    let footer = Helpers.appRoot("public") + `/footer.jpg`;
     footer = await imageToBase64(footer).then(res => {
       return "data:image/jpeg;base64, " + res;
     })
@@ -719,7 +725,7 @@ class ContratoController {
           style: 'textblack',
           margin: [54, 10, 0, 0],
           text: [
-            { style: '', text: `DNI: ${client.dni ? client.dni : ''}\n` },
+            { style: '', text: `NUMERO DE IDENTIFICACION: ${client.dni ? client.dni : ''}\n` },
           ]
         },
         {
@@ -787,41 +793,41 @@ class ContratoController {
               [
                 {
                   alignment: 'left',
-                  border: [false, true, false, false],
+                  border: [false, false, false, false],
                   margin: [0, 5, 0, 0],
                   style: 'textblack',
                   text: [...texservis]
                 },
-                {
-                  alignment: 'center',
-                  border: [true, false, false, false],
-                  style: 'textblack',
-                  margin: [0, 5, 0, 0],
-                  fillColor: '#CCC9C8',
-                  text: [
-                    { style: '', text: `${body.valor} ${body.moneda}` }
-                  ]
-                }
+                // {
+                //   alignment: 'center',
+                //   border: [true, false, false, false],
+                //   style: 'textblack',
+                //   margin: [0, 5, 0, 0],
+                //   fillColor: '#CCC9C8',
+                //   text: [
+                //     { style: '', text: `${body.valor} ${body.moneda}` }
+                //   ]
+                // }
               ],
               [
                 {
                   alignment: 'left',
-                  border: [false, false, true, true],
+                  border: [false, false, false, false],
                   margin: [40, 5, 0, 0],
                   style: 'textnormal',
                   text: [
                     { style: 'header', text: `` }
                   ]
                 },
-                {
-                  alignment: 'right',
-                  border: [false, false, false, true],
-                  style: 'textnormal',
-                  fillColor: '#CCC9C8',
-                  text: [
-                    { style: 'header', text: `` }
-                  ]
-                }
+                // {
+                //   alignment: 'right',
+                //   border: [false, false, false, ],
+                //   style: 'textnormal',
+                //   fillColor: '#CCC9C8',
+                //   text: [
+                //     { style: 'header', text: `` }
+                //   ]
+                // }
               ],
             ]
           },
@@ -840,14 +846,14 @@ class ContratoController {
                 {
                   alignment: 'left',
                   rowSpan: 3,
-                  border: [false, false, true, true],
+                  border: [false, true, true, true],
                   margin: [10, 10, 10, 10],
                   fillColor: '#CCC9C8',
                   text: [
                     { style: 'subtitle', text: `Formas de pago:\n` },
                     { style: 'text',color:'black', text: `${paidMethod.name}\n\n` },
-                    { style: 'subtitle', text: `Observaciones:\n` },
-                    { style: 'text', text: `` },
+                    // { style: 'subtitle', text: `Observaciones:\n` },
+                    // { style: 'text', text: `` },
                   ]
                 },
                 {
@@ -861,7 +867,7 @@ class ContratoController {
                 },
                 {
                   alignment: 'center',
-                  border: [false, false, false, true],
+                  border: [false, true, false, true],
                   margin: [0, 5, 0, 0],
                   text: [
                     { style: 'textblack', text: `${body.valor} ${body.moneda}` }
@@ -917,41 +923,44 @@ class ContratoController {
             vLineColor: '#999999'
           }
         },
+        // {
+        //   style: 'firma',
+        //   alignment: 'center',
+        //   table: {
+        //     widths: [230],
+        //     heights: [25],
+        //     body: [
+        //       [
+        //         {
+        //           alignment: 'center',
+        //           border: [false, false, false, true],
+        //           margin: [0, 0, 0, 0],
+        //           text: [
+        //             { style: '', text: `` },
+        //           ]
+        //         }
+        //       ],
+        //       [
+        //         {
+        //           alignment: 'center',
+        //           border: [false, false, false, false],
+        //           margin: [0, 0, 0, 0],
+        //           text: [
+        //             { style: 'subtitle', text: `Firma Autorizada` },
+        //           ]
+        //         }
+        //       ]
+        //     ]
+        //   },
+        //   layout: {
+        //     hLineColor: '#999999',
+        //     vLineColor: '#999999'
+        //   }
+        // },
         {
-          style: 'firma',
-          alignment: 'center',
-          table: {
-            widths: [230],
-            heights: [25],
-            body: [
-              [
-                {
-                  alignment: 'center',
-                  border: [false, false, false, true],
-                  margin: [0, 0, 0, 0],
-                  text: [
-                    { style: '', text: `` },
-                  ]
-                }
-              ],
-              [
-                {
-                  alignment: 'center',
-                  border: [false, false, false, false],
-                  margin: [0, 0, 0, 0],
-                  text: [
-                    { style: 'subtitle', text: `Firma Autorizada` },
-                  ]
-                }
-              ]
-            ]
-          },
-          layout: {
-            hLineColor: '#999999',
-            vLineColor: '#999999'
-          }
-        },
-        {
+          // marginTop: auto,
+          // display: block,
+          marginBottom: 0,
           image: footer,
           width: 620
         },
