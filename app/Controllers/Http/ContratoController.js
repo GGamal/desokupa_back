@@ -634,9 +634,11 @@ class ContratoController {
     let code = body._id.split('').slice(16).join('')
     let servicios = body.servicio
     let texservis = []
+    let serviciosDesc = []
     if (servicios !== undefined){
       servicios.map((item)=>{
-        texservis = [...texservis, `Servicio: ${item.name} ( ${item.categoria} ) ${item.descripcion}, \n`]
+        texservis = [...texservis, `Servicio: ${item.name} ( ${item.categoria} )\n`]
+        serviciosDesc = [...serviciosDesc,{ pageBreak: 'before',text: `Servicio: ${item.name} ( ${item.categoria} ) \n`, style: 'header',margin: [10,10,10,10]}, {text: `${item.descripcion}`,margin: [10,10,10,10]}]
       })
     }
     body.date = moment(body.created_at).format('DD/MM/YYYY')
@@ -646,12 +648,12 @@ class ContratoController {
     igic = numeral(igic).format('0,0€');
     let header = Helpers.appRoot("public") + `/header.jpg`;
     header = await imageToBase64(header).then(res => {
-      return "data:image/jpeg;base64, " + res;
+      return "data:image/jpg;base64, " + res;
     })
 
     let footer = Helpers.appRoot("public") + `/footer.jpg`;
     footer = await imageToBase64(footer).then(res => {
-      return "data:image/jpeg;base64, " + res;
+      return "data:image/jpg;base64, " + res;
     })
     var fonts = {
       Roboto: {
@@ -665,7 +667,7 @@ class ContratoController {
     let docDefinition = {
       pageSize: 'letter',
       // pageOrientation: 'landscape',
-      pageMargins: [0, 165, 60, 0],
+      pageMargins: [0, 165, 0, 70],
       header: {
         image: header,
         alignment: 'center',
@@ -675,8 +677,7 @@ class ContratoController {
       footer: {
         image: footer,
         alignment: 'center',
-        position: path.isAbsolute,
-        width: 100,
+        width: 620,
         margin: [0, 0, 0, 0],
       },
       content: [
@@ -922,8 +923,11 @@ class ContratoController {
           layout: {
             hLineColor: '#999999',
             vLineColor: '#999999'
-          }
+          },
         },
+        
+          ...serviciosDesc,
+        
         // {
         //   style: 'firma',
         //   alignment: 'center',
@@ -958,14 +962,18 @@ class ContratoController {
         //     vLineColor: '#999999'
         //   }
         // },
-        {
-          // marginTop: auto,
-          // display: block,
-          marginBottom: 0,
-          image: footer,
-          width: 620
-        },
+        // {
+        //   // marginTop: 15,
+        //   // display: block,
+        //   // style:'foter',
+        //   image: footer,
+        //   width: 620,
+          
+        // },
       ],
+      images: {
+        footer: `${footer}`,
+      },
       styles: {
         header: {
           bold: true,
@@ -1016,6 +1024,12 @@ class ContratoController {
           fontSize: 13,
           color: 'black'
         },
+        margins: {
+          margin: [10, 10, 10, 10],
+        }
+        // foter: {
+        //   marginBottom:-100,
+        // }
       }
     }
     var pdfDoc = await printer.createPdfKitDocument(docDefinition)
