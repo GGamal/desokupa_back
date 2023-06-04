@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Node modules
 node_modules
 
@@ -13,4 +13,4 @@ database/*.sqlite
 storage
 =======
 node_modules
->>>>>>> d2394994e76aed46bcb7f6944f14c1617ba2bee7
+
