@@ -30,14 +30,6 @@ adonis migration:run
 ```
 
 ## adonis server start
-<<<<<<< HEAD
-
-adonis serve --dev
-
-
-
-=======
->>>>>>> 4f8a08e47a2c39eb818793d451bedd571692fef2
 
 ``` adonis serve --dev
 ```
