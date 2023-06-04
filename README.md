@@ -10,6 +10,8 @@ This is the boilerplate for creating an API server in AdonisJs, it comes pre-con
 
 ## Setup
 
+npm i -g @adonisjs/cli
+
 Use the adonis command to install the blueprint
 
 ```bash
@@ -27,5 +29,9 @@ Run the following command to run startup migrations.
 adonis migration:run
 ```
 
+## adonis server start
+
+``` adonis serve --dev
+```
 
 ### sale error de conexion con el servidor cuando edito algun cliente, pero si se guardan los cambios. solo pasa al editar un cliente
